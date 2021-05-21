@@ -1,0 +1,13 @@
+- name: Check if rsyslogd is running
+  shell: pgrep rsyslogd
+  ignore_errors: yes
+  changed_when: false
+  register: service_rsyslogd_status
+
+- name: Report status of rsyslogd
+  fail:
+    msg: |
+      Service rsyslogd is not running.
+      Return code from `pgrep`:
+      {{ service_rsyslogd_status.rc }}
+  when: service_rsyslogd_status.rc != 0
